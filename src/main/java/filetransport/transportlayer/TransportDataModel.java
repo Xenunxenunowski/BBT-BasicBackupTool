@@ -1,4 +1,6 @@
 package filetransport.transportlayer;
 
-public record TransportDataModel(String id, byte lenght, byte[] data) {
+import java.io.Serializable;
+
+public record TransportDataModel(byte flag, byte[] data, byte uuid) implements Serializable {
 }

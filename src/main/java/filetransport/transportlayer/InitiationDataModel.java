@@ -1,4 +1,8 @@
 package filetransport.transportlayer;
 
-public record InitiationDataModel(String id,String fileName,String offsetDirectory) {
+import backupcomponents.BackupRecord;
+
+import java.io.Serializable;
+
+public record InitiationDataModel(byte id, BackupRecord backupRecord) implements Serializable {
 }
