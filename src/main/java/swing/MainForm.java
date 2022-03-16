@@ -6,6 +6,7 @@ import backupcomponents.DirectoryPreperer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import serverconfiguration.ServerConfigurator;
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -34,12 +35,25 @@ public class MainForm {
     private JLabel backupHour;
     private JButton editButton;
     private JProgressBar progressBar1;
+    private JLabel saveDirectory;
+    private JButton changeDirectoryButton;
     private BackupManager backupManager;
-    private ServerConfigurator serverConfigurator = new ServerConfigurator();
+    private ServerConfigurator serverConfigurator = ServerConfigurator.getInstance();
     private BackupRecord currentBackupRecord;
-    public MainForm (BackupManager backupManager, ServerConfigurator serverConfigurator){
+    public MainForm (BackupManager backupManager){
         DefaultListModel<BackupRecord> listModel = new DefaultListModel<>();
 
+        changeDirectoryButton.addActionListener((actionEvent)->{
+            JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int returnValue = jfc.showOpenDialog(null);
+            // int returnValue = jfc.showSaveDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = jfc.getSelectedFile();
+                System.out.println(selectedFile.getAbsolutePath());
+            }
+        });
 
         this.serverConfigurator=serverConfigurator;
         this.backupManager = backupManager;
@@ -51,7 +65,9 @@ public class MainForm {
             portField.setText(String.valueOf(serverConfigurator.getPortNumber()));
             clientRadioButton.setSelected(serverConfigurator.isWorkAsClient());
         }
-
+        editButton.addActionListener((actionEvent)->{
+            new Thread(new BackupConfigurator(list1.getSelectedValue())).run();
+        });
         //settings stuff
         applyButton.addActionListener((actionEvent)->{
             System.out.println("Applying settings ...");
@@ -86,7 +102,7 @@ public class MainForm {
         List<File> fileList = new ArrayList<>();
         fileList.add(new File("/home/xenu/ang/17.12.2021"));
         fileList.add(new File("/home/xenu/ang/10.12.2021"));
-        listModel.addElement(new BackupRecord(fileList,"Noice Backup","asdfaefew",DayOfWeek.WEDNESDAY,10,40));
+        listModel.addElement(new BackupRecord(fileList,"Noice Backup","asdfaefew",DayOfWeek.WEDNESDAY,5,40));
         list1.setModel(listModel);
         list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //list ActionListener
@@ -110,10 +126,9 @@ public class MainForm {
         System.out.println(UIManager.getLookAndFeel());
         JFrame frame = new JFrame("Basic Backup Tool");
         frame.setName("Basic Backup Tool");
-        frame.setContentPane(new MainForm(backupManager,serverConfigurator).Tabs);
+        frame.setContentPane(new MainForm(backupManager).Tabs);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-
     }
 }

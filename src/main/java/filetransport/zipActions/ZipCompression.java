@@ -11,9 +11,6 @@ import java.util.zip.ZipOutputStream;
 public class ZipCompression {
     public static void zipFolder(List<File> srcFolder, String destZipFile, ObjectOutputStream  obj, BackupRecord backupUUID) throws Exception {
         ZipOutputStream zip = null;
-        FileOutputStream fileWriter = null;
-
-        fileWriter = new FileOutputStream(destZipFile);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         zip = new ZipOutputStream(byteArrayOutputStream);
         for (File file: srcFolder) {

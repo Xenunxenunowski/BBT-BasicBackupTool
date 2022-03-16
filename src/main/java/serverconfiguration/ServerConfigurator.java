@@ -1,20 +1,17 @@
 package serverconfiguration;
 
 public class ServerConfigurator {
-    private String serverDomain;
-    private char[] serverPassword;
-    private int portNumber;
-    private boolean autoLogin,workAsClient;
+    private static String serverDomain;
+    private static char[] serverPassword;
+    private static int portNumber;
+    private static boolean autoLogin,workAsClient;
+    private static ServerConfigurator serverConfigurator = new ServerConfigurator();
 
-    public ServerConfigurator(String serverDomain, char[] serverPassword, int portNumber, boolean autoLogin, boolean workAsClient) {
-        this.serverDomain = serverDomain;
-        this.serverPassword = serverPassword;
-        this.portNumber = portNumber;
-        this.autoLogin = autoLogin;
-        this.workAsClient = workAsClient;
+    public static ServerConfigurator getInstance( ) {
+        return serverConfigurator;
     }
 
-    public ServerConfigurator() {
+    private ServerConfigurator() {
     }
 
     public boolean isWorkAsClient() {

@@ -18,7 +18,12 @@ public class Client {
     private InputStream input = null;
     private OutputStream out = null;
 
-    // constructor to put ip address and port
+    /**
+     * Client for connecting to server once and sending a backup
+     * @param address
+     * @param port
+     * @param backupRecord
+     */
     public Client(String address, int port, BackupRecord backupRecord) {
         // establish a connection
         try {
@@ -26,7 +31,6 @@ public class Client {
             socket = new Socket(address, port);
             System.out.println("Connected");
             input = new DataInputStream(System.in);
-            //out    =socket.getOutputStream();
             ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
             out = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
@@ -40,14 +44,9 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
 
-            // string to read message from input
-            // keep reading until "Over" is input
-
-            // close the connection
+            //close conn
             try {
-                //out.flush();
                 input.close();
-                //out.close();
                 socket.close();
             } catch (IOException i) {
                 System.out.println(i);

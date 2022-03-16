@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Main {
     public static BackupManager backupManager = new BackupManager();
-    public static ServerConfigurator serverConfigurator = new ServerConfigurator();
+    public static ServerConfigurator serverConfigurator = ServerConfigurator.getInstance();
     public static void main(String[] args) throws InterruptedException {
         //load all settings
         File pathToConfig = new File(System.getProperty("user.home")+"/BBT/config/config.json");
@@ -45,14 +45,14 @@ public class Main {
         }
         //WORKS
         new Thread(client).start();
-        Thread.sleep(100);
+        new Thread(client2).start();
 
     }
     static Runnable server =()->{
         Server server = new Server(5000);
     };
     static Runnable GUI =()->{
-        MainForm mainForm = new MainForm(backupManager,serverConfigurator);
+        MainForm mainForm = new MainForm(backupManager);
         mainForm.start();
     };
     static Runnable client =()->{
@@ -61,5 +61,11 @@ public class Main {
         fileList2.add(new File("/home/xenu/ang/10.12.2021"));
         fileList2.add(new File("/home/xenu/ang/04.03.2022"));
         Client client = new Client(serverConfigurator.getServerDomain(), serverConfigurator.getPortNumber(),new BackupRecord(fileList2,"Noice Backup","asdfaefew", DayOfWeek.WEDNESDAY,10,40));
+    };
+    static Runnable client2 =()->{
+        List<File> fileList2 = new ArrayList<>();
+        fileList2.add(new File("/home/xenu/ang/17.12.2021"));
+        fileList2.add(new File("/home/xenu/ang/10.12.2021"));
+        Client client = new Client(serverConfigurator.getServerDomain(), serverConfigurator.getPortNumber(),new BackupRecord(fileList2,"BETTTER","4345r24tfg4fr5", DayOfWeek.MONDAY,12,32));
     };
 }

@@ -22,14 +22,14 @@ public class ServerChild implements Runnable{
             System.out.println("Client accepted");
         System.out.println("Working as " + Thread.currentThread().getName());
         // takes input from the client socket
-        File f = new File("outzzz.zip");
-        FileOutputStream outputStream = new FileOutputStream(f);
+
 
             in = new ObjectInputStream(socket.getInputStream());
-                        //byte[] buffor = new byte[4096];
             System.out.println("Waiting for Initiation");
             initiationDataModel = (InitiationDataModel) in.readObject();
             System.out.println("Recived Initiation");
+            File f = new File(initiationDataModel.backupRecord().getUUID()+".zip");
+            FileOutputStream outputStream = new FileOutputStream(f);
         TransportDataModel transportDataModel;
             while (true) {
                 System.out.println("STARTED LOOP");

@@ -36,7 +36,15 @@ public class BackupConfigurator implements Runnable{
         for(int x=0; x<=59; x++){
             minuteCombo.addItem(x);
         }
+        ComboBoxModel comboBoxModel1 = new DefaultComboBoxModel();
+        hourCombo.setModel(comboBoxModel1);
+        for(int x=0; x<=23; x++){
+            hourCombo.addItem(x);
+        }
         backupName.setText(backupRecord.getNameOfRecord());
+        dayOfWeekCombo.setSelectedItem(backupRecord.getDayOfWeek());
+        hourCombo.setSelectedItem(backupRecord.getHour());
+        minuteCombo.setSelectedItem(backupRecord.getMinute());
         backup.addActionListener(e -> {
             System.out.println("yey");
         });
